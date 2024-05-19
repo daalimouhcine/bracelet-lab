@@ -6,6 +6,7 @@ interface DraggableComponentProps {
   component: React.ReactNode;
   moveComponent: (dragIndex: number, hoverIndex: number) => void;
   index: number;
+  fromExplorer?: boolean; // Add optional fromExplorer flag
 }
 
 const DraggableComponent: React.FC<DraggableComponentProps> = ({
@@ -13,6 +14,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
   component,
   moveComponent,
   index,
+  fromExplorer = false, // Default to false if not provided
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -50,7 +52,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
 
   const [{ isDragging }, drag] = useDrag({
     type: "component",
-    item: { id, index },
+    item: { id, index, component, fromExplorer },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -61,7 +63,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
   return (
     <div
       ref={ref}
-      className={`p-2 ${isDragging ? "opacity-50" : "opacity-100"}`}>
+      className={`p-2 h-fit ${isDragging ? "opacity-50" : "opacity-100"}`}>
       {component}
     </div>
   );
