@@ -1,12 +1,12 @@
-import React, { useRef } from "react";
-import { useDrag, useDrop } from "react-dnd";
+import React, { useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 
 interface DraggableComponentProps {
   id: number;
   component: React.ReactNode;
   moveComponent: (dragIndex: number, hoverIndex: number) => void;
   index: number;
-  fromExplorer?: boolean; // Add optional fromExplorer flag
+  fromExplorer?: boolean;
 }
 
 const DraggableComponent: React.FC<DraggableComponentProps> = ({
@@ -14,12 +14,12 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
   component,
   moveComponent,
   index,
-  fromExplorer = false, // Default to false if not provided
+  fromExplorer = false,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop({
-    accept: "component",
+    accept: 'component',
     hover(item: { id: number; index: number }, monitor) {
       if (!ref.current) {
         return;
@@ -32,8 +32,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
       }
 
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
 
@@ -51,7 +50,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
   });
 
   const [{ isDragging }, drag] = useDrag({
-    type: "component",
+    type: 'component',
     item: { id, index, component, fromExplorer },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -61,9 +60,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({
   drag(drop(ref));
 
   return (
-    <div
-      ref={ref}
-      className={`p-2 h-fit ${isDragging ? "opacity-50" : "opacity-100"}`}>
+    <div ref={ref} className={`mx-2 ${isDragging ? 'hidden' : 'block'}`}>
       {component}
     </div>
   );
