@@ -13,7 +13,7 @@ const components = [
   },
   {
     id: 3,
-    component: <FaPlus className='text-white' />,
+    component: <FaPlus className='w-fit text-white' />,
   },
 ];
 

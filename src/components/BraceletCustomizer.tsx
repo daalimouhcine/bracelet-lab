@@ -32,10 +32,14 @@ const BraceletCustomizer: React.FC = () => {
       fromExplorer: boolean;
     }) => {
       if (item.fromExplorer) {
-        setComponents((prevComponents) => [
-          ...prevComponents,
-          { id: prevComponents.length, component: item.component },
-        ]);
+        setComponents((prevComponents) => {
+          const updatedComponents = [...prevComponents];
+          updatedComponents.splice(hoverIndex ?? updatedComponents.length, 0, {
+            id: prevComponents.length,
+            component: item.component,
+          });
+          return updatedComponents;
+        });
       }
       setHoverIndex(null); // Reset hover index on drop
     },
