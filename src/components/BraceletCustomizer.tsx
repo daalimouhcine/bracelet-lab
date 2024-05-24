@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import DraggableComponent from "./DraggableComponent";
 
@@ -13,6 +13,8 @@ interface ComponentItem {
 const BraceletCustomizer: React.FC = () => {
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null); // State to track hover index
+  const ref = useRef<HTMLDivElement>(null);
+
 
   const moveComponent = (fromIndex: number, toIndex: number) => {
     setComponents((prevComponents) => {
@@ -44,21 +46,8 @@ const BraceletCustomizer: React.FC = () => {
       setHoverIndex(null); // Reset hover index on drop
     },
     hover: (item: { id: number; index: number }, monitor) => {
-      const hoverBoundingRect = monitor.getClientOffset();
-      if (!hoverBoundingRect) {
-        return;
-      }
-
-      const hoverMiddleY = hoverBoundingRect.y;
-      const hoverClientY = monitor.getClientOffset()!.y;
-
-      const newHoverIndex = components.findIndex((_, i) => i === item.index);
-
-      if (hoverClientY < hoverMiddleY) {
-        setHoverIndex(newHoverIndex);
-      } else {
-        setHoverIndex(newHoverIndex + 1);
-      }
+      // get the hover index depending on 
+        
     },
   });
 
@@ -67,7 +56,9 @@ const BraceletCustomizer: React.FC = () => {
       <h2 className='text-xl mb-4'>Bracelet Customizer</h2>
       <div
         ref={drop}
-        className='flex relative items-center border p-4 bg-gray-600'>
+        className={`flex relative items-center border bg-gray-600 ${
+          components.length === 0 && "p-4"
+        }`}>
         {components.map((componentData, index) => (
           <React.Fragment key={componentData.id}>
             <div className='flex'>
@@ -81,12 +72,13 @@ const BraceletCustomizer: React.FC = () => {
                 component={componentData.component}
                 moveComponent={moveComponent}
               />
+              {/* {hoverIndex === components.length &&
+                index === components.length - 1 && (
+                  <div className=' absolute top-0 w-0.5 h-full inline bg-red-500' />
+                )} */}
             </div>
           </React.Fragment>
         ))}
-        {hoverIndex === components.length && (
-          <div className='absolute top-0 w-0.5 h-full inline bg-blue-500' />
-        )}
       </div>
     </div>
   );

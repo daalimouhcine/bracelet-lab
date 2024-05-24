@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaMagnifyingGlass, FaPlus } from 'react-icons/fa6';
+import { FaPlus } from 'react-icons/fa6';
 import DraggableComponent from './DraggableComponent';
 
 const components = [
@@ -22,14 +22,14 @@ const Explorer: React.FC = () => {
     <div className='bg-zinc-800 min-h-screen p-4'>
       <div className='flex gap-x-5 justify-between p-2 mb-2 border-b'>
         <h4 className='text-white'>Explorer</h4>
-        <div className='relative min-w-max'>
+        {/* <div className='relative min-w-max'>
           <input
             type='text'
             className='w-full rounded-sm'
             placeholder='search by name'
           />
           <FaMagnifyingGlass className='absolute right-0 top-1/2 transform -translate-y-1/2 text-white' />
-        </div>
+        </div> */}
       </div>
       <div className='text-white'>
         <h5>Components</h5>
