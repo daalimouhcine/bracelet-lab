@@ -1,17 +1,30 @@
+import { useState } from "react";
 import BraceletCustomizer from "./components/BraceletCustomizer";
 import Explorer from "./components/Explorer";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
 function App() {
+  const [cartItems, setCartItems] = useState<string[]>([]);
+
+  const addItemsToCart = (e: DragEndEvent) => {
+    const newItem = e.active.data.current?.title;
+    if (e.over?.id !== "bracelet-droppable" || !newItem) return;
+    const temp = [...cartItems];
+    temp.push(newItem);
+    setCartItems(temp);
+  };
+
   return (
-    <div className='flex bg-zinc-600'>
-      <div className='w-1/4'>
-        <h2 className='text-xl mb-4'>Bracelet Customizer</h2>
-        <Explorer />
+    <DndContext onDragEnd={addItemsToCart}>
+      <div className='flex bg-zinc-600'>
+        <div className='w-1/4'>
+          <Explorer />
+        </div>
+        <div className='w-3/4'>
+          <BraceletCustomizer items={cartItems} />
+        </div>
       </div>
-      <div className='w-3/4'>
-        <BraceletCustomizer />
-      </div>
-    </div>
+    </DndContext>
   );
 }
 
