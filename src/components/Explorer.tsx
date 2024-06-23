@@ -1,7 +1,8 @@
 import React from "react";
 import DraggableComponent from "./DraggableComponent";
+import { DragOverlay } from "@dnd-kit/core";
 
-const Explorer: React.FC = () => {
+const Explorer: React.FC<{ activeId: string }> = ({ activeId }) => {
   const fruits = ["🍏", "🍎", "🍐", "🍊", "🍋", "🍌", "🍉", "🍇"];
 
   return (
@@ -15,6 +16,9 @@ const Explorer: React.FC = () => {
           {fruits.map((fruit) => (
             <DraggableComponent key={fruit}>{fruit}</DraggableComponent>
           ))}
+          <DragOverlay>
+            {activeId ? <div className='cursor-move w-fit p-2'>{activeId}</div> : null}
+          </DragOverlay>
         </div>
       </div>
     </div>

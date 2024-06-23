@@ -1,10 +1,11 @@
 import { useState } from "react";
 import BraceletCustomizer from "./components/BraceletCustomizer";
 import Explorer from "./components/Explorer";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 
 function App() {
   const [cartItems, setCartItems] = useState<string[]>([]);
+  const [activeId, setActiveId] = useState("");
 
   const addItemsToCart = (e: DragEndEvent) => {
     const newItem = e.active.data.current?.title;
@@ -12,13 +13,18 @@ function App() {
     const temp = [...cartItems];
     temp.push(newItem);
     setCartItems(temp);
+    setActiveId("");
+  };
+
+  const handleDragStart = (e: DragStartEvent) => {
+    setActiveId(e.active.id as string);
   };
 
   return (
-    <DndContext onDragEnd={addItemsToCart}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={addItemsToCart}>
       <div className='flex bg-zinc-600'>
         <div className='w-1/4'>
-          <Explorer />
+          <Explorer activeId={activeId} />
         </div>
         <div className='w-3/4'>
           <BraceletCustomizer items={cartItems} />
